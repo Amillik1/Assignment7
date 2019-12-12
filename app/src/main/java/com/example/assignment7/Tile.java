@@ -35,10 +35,25 @@ public class Tile {
     public void draw(Canvas canvas, Paint paint){
         //draw hex
         float[] vert = {centerX, centerY, centerX+50, centerY-87, centerX-50, centerY-87, centerX-100, centerY, centerX-50, centerY+87, centerX+50, centerY+87,centerX+100, centerY, centerX+50, centerY-87};
-        int[] colorsSelected = {Color.TRANSPARENT, Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW};
-        int[] colorsNormal = {Color.TRANSPARENT, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY};
-        int[] colorsTarget = {Color.TRANSPARENT, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED};
+        int[] colorsSelected = {Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW};
+        int[] colorsNormal = {Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY};
+        int[] colorsTarget = {Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED};
         //canvas mode is triangle_fan, hex needs 7 points
+        if(tileOccupant == token.cloud){
+            colorsSelected[0] = Color.BLUE;
+            colorsNormal[0] = Color.BLUE;
+            colorsTarget[0] = Color.BLUE;
+        }else if(tileOccupant == token.tree){
+            colorsSelected[0] = Color.GREEN;
+            colorsNormal[0] = Color.GREEN;
+            colorsTarget[0] = Color.GREEN;
+        }else if(tileOccupant == token.sun){
+            //COLOR = ORANGE
+            colorsSelected[0] = Color.rgb(255,165,0);
+            colorsNormal[0] = Color.rgb(255,165,0);
+            colorsTarget[0] = Color.rgb(255,165,0);
+        }
+
         if (tileStatus == status.none){
             canvas.drawVertices(Canvas.VertexMode.TRIANGLE_FAN, vert.length, vert, 0, null, 0, colorsNormal, 0, null, 0, 0, paint);
         }
@@ -47,14 +62,6 @@ public class Tile {
         }
         if (tileStatus == status.target){
             canvas.drawVertices(Canvas.VertexMode.TRIANGLE_FAN, vert.length, vert, 0, null, 0, colorsTarget, 0, null, 0, 0, paint);
-        }
-
-        if(tileOccupant == token.cloud){
-            //draw a little cloud symbol
-        }else if(tileOccupant == token.sun){
-            //draw a little sun symbol
-        }else if(tileOccupant == token.tree){
-            //draw a little tree
         }
 
 

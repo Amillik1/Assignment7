@@ -29,7 +29,8 @@ public class Gameboard extends AppCompatActivity implements View.OnTouchListener
     float centerY;
     Vector<Tile> gameboard = new Vector<>();
     GameView gameView;
-    int dieRoll = 6; //HARDCODED, THIS WILL CHANGE
+    Tile selectedTile = null;
+    int dieRoll = 3; //HARDCODED, THIS WILL CHANGE
 
 
     @Override
@@ -102,7 +103,10 @@ public class Gameboard extends AppCompatActivity implements View.OnTouchListener
         gameboard.add(tile15);
 
 
-
+        //TESTING: place a cloud token on space 1
+        tile1.tileOccupant = Tile.token.cloud;
+        tile5.tileOccupant = Tile.token.tree;
+        tile9.tileOccupant = Tile.token.sun;
 
     }
 
@@ -180,27 +184,35 @@ public class Gameboard extends AppCompatActivity implements View.OnTouchListener
                 closestIndex = i;
             }
         }
+        if(closestIndex != -1) {
+            if (gameboard.elementAt(closestIndex).tileStatus == Tile.status.target && selectedTile.tileOccupant != Tile.token.none) {
+                gameboard.elementAt(closestIndex).tileOccupant = selectedTile.tileOccupant;
+                selectedTile.tileOccupant = Tile.token.none;
+            }
+        }
         //Color the tiles correctly
-        for(int i = 0; i < gameboard.size(); i++){
-            if(i == closestIndex){
+        for (int i = 0; i < gameboard.size(); i++) {
+            if (i == closestIndex) {
                 gameboard.elementAt(i).tileStatus = Tile.status.selected;
                 targetTile.add(gameboard.elementAt(i));
-            }else{
+                selectedTile = gameboard.elementAt(i);
+            } else {
                 gameboard.elementAt(i).tileStatus = Tile.status.none;
             }
         }
 
         //Find tiles the correct number of spaces away
-        for(int iter = 0; iter < dieRoll; iter++){
+        for (int iter = 0; iter < dieRoll; iter++) {
             Vector<Tile> tempVector = new Vector<>();
-            for(int i =0; i < targetTile.size(); i++){
+            for (int i = 0; i < targetTile.size(); i++) {
                 tempVector.addAll(targetTile.elementAt(i).availableSpaces);
             }
             targetTile = tempVector;
         }
-        for(int i = 0; i< targetTile.size(); i++){
+        for (int i = 0; i < targetTile.size(); i++) {
             targetTile.elementAt(i).tileStatus = Tile.status.target;
         }
+
 
 
         return true;
